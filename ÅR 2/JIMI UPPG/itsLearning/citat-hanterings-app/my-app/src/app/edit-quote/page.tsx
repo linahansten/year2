@@ -1,15 +1,14 @@
 import { getData, updateData } from '@/utils/handleDatabase';
 
-export default async function Home() {
+export default async function Home({searchParams}) {
     const data = await getData()
-
    //update
    const update = async (formData:FormData)=>{
     'use server'
     const quote = await formData.get('quote') as string
     const author = await formData.get('author') as string
     const id = await formData.get('id') as string
-    const data= await updateData( id, author, quote)
+    const data= await updateData( searchParams.id, author, quote)
     console.log(data)
   }
   console.log(data)
