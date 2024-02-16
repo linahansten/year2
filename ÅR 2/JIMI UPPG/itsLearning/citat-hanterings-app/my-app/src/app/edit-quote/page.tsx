@@ -7,7 +7,7 @@ export default async function Home({searchParams}) {
     'use server'
     const quote = await formData.get('quote') as string
     const author = await formData.get('author') as string
-    const id = await formData.get('id') as string
+    // const id = await formData.get('id') as string
     const data= await updateData( searchParams.id, author, quote)
     console.log(data)
   }

@@ -13,9 +13,10 @@ export default async function Home() {
     <div className="bg-slate-500 h-screen w-full text-slate-50 flex flex-col justify-center items-center ">
       <h1 className="text-xl text-slate-50 m-4">Quotes</h1>
       {/* Display random quote */}
-      <div className='flex flex-col'>
-        <p key={randomQuote.id}>
-          <strong>{randomQuote.author}:</strong> {randomQuote.quote}
+      <div className='flex flex-col justify-center items-center'>
+        <p key={randomQuote.id} className='flex flex-col justify-center items-center max-md:w-50'>
+          <strong>{randomQuote.author}:</strong> 
+          "{randomQuote.quote}"
         </p>
       </div>
       <a className='mt-4 text-slate-900' href="/all-quotes">See all quotes</a>
