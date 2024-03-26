@@ -4,6 +4,7 @@ import { getData, saveData } from '@/utils/handleDatabase';
 import Link from 'next/link';
 import { Timer } from './Timer';
 import { Create } from './Create';
+import  Delete  from './Delete';
 
 export const Home = () => {
   const [projects, setProjects] = useState([]);
@@ -52,9 +53,10 @@ export const Home = () => {
                 <p>{project.notes}</p>
                 <Timer projectId ={project.id} time ={project.elapsedtime}/>
                 <div className="mt-4 space-x-4">
-                  <Link href={`/edit-project?id=${project.id}`}>Edit</Link>
+                  <Link href={`/edit-project?id=${project.id}`}>Edit WIP</Link>
                 </div>
-              </div>
+              <Delete/>
+            </div>
             ))}
           </div>
         </section>

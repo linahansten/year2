@@ -27,6 +27,17 @@ export async function updateData(id:string, name:string, notes:string, start:Dat
         }
 }
 
+export async function deleteData(id:string){
+    try {
+        await db.query('DELETE FROM projects WHERE id = $1', [id])
+        return 'deleted';
+    } catch (error) {
+        console.log(error);
+        return 'Something went wrong';
+    }
+}
+
+
 export async function startTimer( id: string, start: Date) {
     try {
         await db.query('UPDATE projects SET start = $1 WHERE id = $2',[start, id]);
