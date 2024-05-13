@@ -1,19 +1,32 @@
 'use client'
-import React, { useState } from 'react';
-import  Calendar  from '@/components/Calendar';
-import  { create }  from '@/components/Create';
+import React, { useState, useEffect } from 'react';
+import Calendar from '@/components/Calendar';
+import { create } from '@/components/Create';
 
 export default function Create() {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [csrfToken, setCsrfToken] = useState('');
+
+  useEffect(() => {
+    // Fetch CSRF token when component mounts
+    async function fetchCsrfToken() {
+      const response = await fetch('/api/csrf-token'); // Adjust the URL accordingly
+      const data = await response.json();
+      setCsrfToken(data.csrfToken);
+    }
+    fetchCsrfToken();
+  }, []);
 
   const handleDateChange = (date) => {
-    console.log(date)
     setSelectedDate(new Date(date));
   };
+
   return (
     <div className="bg-gray-900 min-h-screen flex items-center justify-center flex-col">
-      <form className="bg-gray-800 shadow-md rounded-md p-8 max-w-md w-full" action={create}>
+      <form className="bg-gray-800 shadow-md rounded-md p-8 max-w-md w-full" action={create} method="post">
         <h2 className="text-3xl font-semibold mb-6 text-center text-gray-100">Create Event</h2>
+        {/* Include CSRF token as a hidden input field */}
+        <input type="hidden" name="_csrf" value={csrfToken} />
         <div className="mb-4">
           <label className="block text-gray-300 text-sm font-semibold mb-2">Event Name</label>
           <input type="text" className="w-full px-3 py-2 border rounded-md bg-gray-700 focus:outline-none focus:border-blue-500 text-gray-100" name="eventName" placeholder="Event Name" />
