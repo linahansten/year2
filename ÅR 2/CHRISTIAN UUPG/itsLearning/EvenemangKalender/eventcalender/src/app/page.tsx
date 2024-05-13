@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { getData, deleteData } from '@/utils/handleDatabase';
+import Router from '../components/UseRouter';
 
 export default function Create() {
   const [events, setEvents] = useState([]);
@@ -92,7 +93,7 @@ export default function Create() {
           </div>
         ))}
       </div>
-      <a className="text-gray-300 text-sm mb-4" href="/createEvents">Create an Event</a>
+      <Router/>
     </div>
   );
 }
