@@ -1,3 +1,4 @@
+import { getUserByUsername } from "@/utils/handleDatabase";
 import  { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
@@ -7,8 +8,8 @@ export const authOptions:AuthOptions  = {
     Credentials({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "Email",
+        username: {
+          label: "UserName",
           type: "text",
         },
         password: {
@@ -17,12 +18,21 @@ export const authOptions:AuthOptions  = {
         },
       },
       async authorize(credentials, req) {
-        return { id: 1, name: "J Smith", email: "john@gmail.com"} as any
+        if (!credentials){
+          return "hola"
+        }
+        const user = await getUserByUsername(credentials.username, credentials.password)
+        console.log(user)
+        return user
       }
     })
   ],
   session: {
     strategy: "jwt",
   },
-  secret: `${process.env.NEXTAUTH_SECRET}`
+  pages: {
+    signIn:"/sign-in"
+  },
+  secret: `${process.env.NEXTAUTH_SECRET}`,
+
 };

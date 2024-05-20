@@ -50,8 +50,7 @@ export async function saveCredentials(username: string, password: string, id:str
 
 export async function getUserByUsername(username: string, password:string) {
     try {
-        const result = await db.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
-        console.log(result)
+        const result = await db.query('SELECT * FROM users WHERE username = $1 password = $2', [username, password]);
         return result.rows[0];
     } catch (error) {
         console.log(error);

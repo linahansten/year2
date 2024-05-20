@@ -1,0 +1,50 @@
+.calendar {
+    font-family: Arial, sans-serif;
+    font-weight: bolder;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #ffbdbd;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .days {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border: 1.5px solid #090205;
+  }
+  
+  .day {
+    width: calc(100% / 7);
+    text-align: center;
+  }
+  
+  .week {
+    display: flex;
+  }
+  
+  .cell {
+    width: calc(100% / 7);
+    text-align: center;
+    padding: 20px;
+    border: 1.5px solid #090205;
+  }
+  
+  .disabled {
+    color: #ff7d7d;
+  }
+  
+  .currentDay {
+    background-color: #ff7d7d;
+    color: white;
+
+  }
+  
