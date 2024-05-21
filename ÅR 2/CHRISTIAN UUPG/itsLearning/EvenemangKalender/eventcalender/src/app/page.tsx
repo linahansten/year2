@@ -1,32 +1,38 @@
 'use client'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getData, deleteData } from '@/utils/handleDatabase';
 import Router from '../components/UseRouter';
 
-export default function Create() {
-  const [events, setEvents] = useState([]);
+type Event = {
+  id: number;
+  eventname: string;
+  selecteddate: string;
+};
 
-  const fetchEvents = async () => {
+export default function Create() {
+  const [events, setEvents] = useState<Event[]>([]);
+
+  const fetchEvents = useCallback(async () => {
     try {
       const eventData = await getData();
       setEvents(eventData);
     } catch (error) {
       console.error('Error fetching events:', error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [fetchEvents]);
 
-  const deleteEvent = async (id) => {
+  const deleteEvent = useCallback(async (id: number) => {
     try {
-      await deleteData(id);
+      await deleteData(id.toString());
       fetchEvents();
     } catch (error) {
       console.error('Error deleting event:', error);
     }
-  };
+  }, [fetchEvents]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,17 +44,12 @@ export default function Create() {
           deleteEvent(event.id);
         }
       });
-    }, 60000); // 60000 milliseconds = 1 minute
+    }, 60000);
     return () => clearInterval(interval);
-  }, [events]);
-  
+  }, [events, deleteEvent]);
 
-  const handleRefresh = (e) => {
-    e.preventDefault();
-    fetchEvents();
-  };
 
-  const formatDate = (dateString, id) => {
+  const formatDate = useCallback((dateString: string, id: number) => {
     const eventDate = new Date(dateString);
     const now = new Date();
     
@@ -67,12 +68,11 @@ export default function Create() {
     } else if (hoursRemaining <= 24) {
       return `Today - ${hoursRemaining} hours until event`;
     } else {
-      const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+      const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' } as const;
       return eventDate.toLocaleDateString('en-US', options);
     }
-  };
+  }, [deleteEvent]);
 
-  // Sort events based on the time difference
   const sortedEvents = [...events].sort((a, b) => {
     const timeDiffA = new Date(a.selecteddate).getTime() - new Date().getTime();
     const timeDiffB = new Date(b.selecteddate).getTime() - new Date().getTime();
@@ -82,9 +82,7 @@ export default function Create() {
   return (
     <div className="bg-gray-900 min-h-screen flex items-center justify-center flex-col">
       <h2 className="text-3xl font-semibold mb-6 text-center text-gray-100">Events</h2>
-      <a className="text-gray-300 text-sm mb-4" href="#" onClick={handleRefresh}>
-        Refresh Page
-      </a>
+      <Router/>
       <div>
         {sortedEvents.map((event) => (
           <div key={event.id} className="text-gray-100 flex flex-col justify-center "> 
@@ -93,7 +91,6 @@ export default function Create() {
           </div>
         ))}
       </div>
-      <Router/>
     </div>
   );
 }

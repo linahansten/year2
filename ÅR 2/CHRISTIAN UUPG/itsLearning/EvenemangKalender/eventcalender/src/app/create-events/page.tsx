@@ -6,7 +6,7 @@ import { create } from '@/components/Create';
 export default function Create() {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const handleDateChange = (date) => {
+  const handleDateChange = (date:Date) => {
     setSelectedDate(new Date(date));
   };
 
